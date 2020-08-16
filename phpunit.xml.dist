@@ -1,2 +1,16 @@
-<phpunit bootstrap="./tests/bootstrap.php">
+<phpunit colors="false"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         stopOnFailure="true">
+  <testsuites>
+    <testsuite name="Tests">
+      <directory>tests</directory>
+    </testsuite>
+  </testsuites>
+  <filter>
+    <whitelist>
+      <directory suffix="Test.php">tests</directory>
+    </whitelist>
+  </filter>
 </phpunit>

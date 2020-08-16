@@ -1,5 +1,7 @@
 <?php
 
+namespace Pear\Cache\Lite;
+
 /**
 * This class extends Cache_Lite and uses output buffering to get the data to cache.
 *
@@ -10,37 +12,8 @@
 * @author Fabien MARTY <fab@php.net>
 */
 
-require_once('Cache/Lite.php');
-
-class Cache_Lite_Output extends Cache_Lite
+class Output extends Lite
 {
-
-    // --- Public methods ---
-
-    /**
-    * Constructor
-    *
-    * $options is an assoc. To have a look at availables options,
-    * see the constructor of the Cache_Lite class in 'Cache_Lite.php'
-    *
-    * @param array $options options
-    * @access public
-    */
-    function __construct($options)
-    {
-        parent::__construct($options);
-    }
-
-    /**
-     * PHP4 constructor for backwards compatibility with older code
-     *
-     * @param array $options Options
-     */
-    function Cache_Lite_Output($options = array(NULL))
-    {
-        self::__construct($options);
-    }
-
     /**
     * Start the cache
     *
@@ -48,15 +21,16 @@ class Cache_Lite_Output extends Cache_Lite
     * @param string $group name of the cache group
     * @param boolean $doNotTestCacheValidity if set to true, the cache validity won't be tested
     * @return boolean true if the cache is hit (false else)
-    * @access public
     */
-    function start($id, $group = 'default', $doNotTestCacheValidity = false)
+    function start(string $id, $group = Lite::DEFAULT_GROUP, $doNotTestCacheValidity = false)
     {
         $data = $this->get($id, $group, $doNotTestCacheValidity);
+
         if ($data !== false) {
             echo($data);
             return true;
         }
+
         ob_start();
         ob_implicit_flush(false);
         return false;
@@ -64,8 +38,6 @@ class Cache_Lite_Output extends Cache_Lite
 
     /**
     * Stop the cache
-    *
-    * @access public
     */
     function end()
     {

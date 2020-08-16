@@ -1,5 +1,7 @@
 <?php
 
+namespace Pear\Cache\Lite;
+
 /**
 * This class extends Cache_Lite and can be used to cache the result and output of functions/methods
 *
@@ -15,9 +17,7 @@
 * @author Fabien MARTY <fab@php.net>
 */
 
-require_once('Cache/Lite.php');
-
-class Cache_Lite_Function extends Cache_Lite
+class LiteFunction extends Lite
 {
 
     // --- Private properties ---
@@ -27,7 +27,7 @@ class Cache_Lite_Function extends Cache_Lite
      *
      * @var string $_defaultGroup
      */
-    var $_defaultGroup = 'Cache_Lite_Function';
+    private $_defaultGroup = 'Cache_Lite_Function';
 
     /**
      * Don't cache the method call when its output contains the string "NOCACHE"
@@ -37,28 +37,28 @@ class Cache_Lite_Function extends Cache_Lite
      *
      * @var boolean $_dontCacheWhenTheOutputContainsNOCACHE
      */
-    var $_dontCacheWhenTheOutputContainsNOCACHE = false;
+    private $_dontCacheWhenTheOutputContainsNOCACHE = false;
 
     /**
      * Don't cache the method call when its result is false
      *
      * @var boolean $_dontCacheWhenTheResultIsFalse
      */
-    var $_dontCacheWhenTheResultIsFalse = false;
+    private $_dontCacheWhenTheResultIsFalse = false;
 
     /**
      * Don't cache the method call when its result is null
      *
      * @var boolean $_dontCacheWhenTheResultIsNull
      */
-    var $_dontCacheWhenTheResultIsNull = false;
+    private $_dontCacheWhenTheResultIsNull = false;
 
     /**
      * Debug the Cache_Lite_Function caching process
      *
      * @var boolean $_debugCacheLiteFunction
      */
-    var $_debugCacheLiteFunction = false;
+    private $_debugCacheLiteFunction = false;
 
     // --- Public methods ----
 
@@ -81,41 +81,41 @@ class Cache_Lite_Function extends Cache_Lite
     * @param array $options options
     * @access public
     */
-    function __construct($options = array(NULL))
+    public function __construct(array $options = array())
     {
-        $availableOptions = array('debugCacheLiteFunction', 'defaultGroup', 'dontCacheWhenTheOutputContainsNOCACHE', 'dontCacheWhenTheResultIsFalse', 'dontCacheWhenTheResultIsNull');
+        $availableOptions = [
+            'debugCacheLiteFunction',
+            'defaultGroup',
+            'dontCacheWhenTheOutputContainsNOCACHE',
+            'dontCacheWhenTheResultIsFalse',
+            'dontCacheWhenTheResultIsNull'
+        ];
+
         foreach ($options as $name => $value) {
             if (in_array($name, $availableOptions)) {
                 $property = '_'.$name;
                 $this->$property = $value;
             }
         }
+
         reset($options);
+
         parent::__construct($options);
     }
 
     /**
-     * PHP4 constructor for backwards compatibility with older code
+     * Calls a cacheable function or method (or not if there is already a cache for it)
      *
-     * @param array $options Options
+     * Arguments of this method are read with func_get_args. So it doesn't appear
+     * in the function definition. Synopsis :
+     * call('functionName', $arg1, $arg2, ...)
+     * (arg1, arg2... are arguments of 'functionName')
+     *
+     * @return mixed result of the function/method
+     * @access public
+     * @throws Exceptions\CacheLiteException
      */
-    function Cache_Lite_Function($options = array(NULL))
-    {
-        self::__construct($options);
-    }
-
-    /**
-    * Calls a cacheable function or method (or not if there is already a cache for it)
-    *
-    * Arguments of this method are read with func_get_args. So it doesn't appear
-    * in the function definition. Synopsis :
-    * call('functionName', $arg1, $arg2, ...)
-    * (arg1, arg2... are arguments of 'functionName')
-    *
-    * @return mixed result of the function/method
-    * @access public
-    */
-    function call()
+    public function call()
     {
         $arguments = func_get_args();
         $id = $this->_makeId($arguments);
@@ -181,16 +181,17 @@ class Cache_Lite_Function extends Cache_Lite
     }
 
     /**
-    * Drop a cache file
-    *
-    * Arguments of this method are read with func_get_args. So it doesn't appear
-    * in the function definition. Synopsis :
-    * remove('functionName', $arg1, $arg2, ...)
-    * (arg1, arg2... are arguments of 'functionName')
-    *
-    * @return boolean true if no problem
-    * @access public
-    */
+     * Drop a cache file
+     *
+     * Arguments of this method are read with func_get_args. So it doesn't appear
+     * in the function definition. Synopsis :
+     * remove('functionName', $arg1, $arg2, ...)
+     * (arg1, arg2... are arguments of 'functionName')
+     *
+     * @return boolean true if no problem
+     * @access public
+     * @throws Exceptions\CacheLiteException
+     */
     function drop()
     {
         $id = $this->_makeId(func_get_args());
@@ -214,5 +215,4 @@ class Cache_Lite_Function extends Cache_Lite
         }
         return $id;
     }
-
 }

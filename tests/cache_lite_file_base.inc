@@ -1,3 +1,3 @@
 <?php
-require_once('Cache/Lite/File.php');
+require_once('src/Lite/File.php');
 ?>

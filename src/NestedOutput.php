@@ -1,5 +1,7 @@
 <?php
 
+namespace Pear\Cache\Lite;
+
 /**
 * This class extends Cache_Lite and uses output buffering to get the data to cache.
 * It supports nesting of caches
@@ -8,22 +10,21 @@
 * @author Markus Tacker <tacker@php.net>
 */
 
-require_once('Cache/Lite/Output.php');
-
-class Cache_Lite_NestedOutput extends Cache_Lite_Output
+class NestedOutput extends Output
 {
 	private $nestedIds = array();
 	private $nestedGroups = array();
 
     /**
-    * Start the cache
-    *
-    * @param string $id cache id
-    * @param string $group name of the cache group
-    * @param boolean $doNotTestCacheValidity if set to true, the cache validity won't be tested
-    * @return boolean|string false if the cache is not hit else the data
-    * @access public
-    */
+     * Start the cache
+     *
+     * @param string $id cache id
+     * @param string $group name of the cache group
+     * @param boolean $doNotTestCacheValidity if set to true, the cache validity won't be tested
+     * @return boolean|string false if the cache is not hit else the data
+     * @access public
+     * @throws Exceptions\CacheLiteException
+     */
     function start($id, $group = 'default', $doNotTestCacheValidity = false)
     {
     	$this->nestedIds[] = $id;
@@ -38,11 +39,11 @@ class Cache_Lite_NestedOutput extends Cache_Lite_Output
     }
 
     /**
-    * Stop the cache
-    *
-    * @param boolen
-    * @return string return contents of cache
-    */
+     * Stop the cache
+     *
+     * @return string return contents of cache
+     * @throws Exceptions\CacheLiteException
+     */
     function end()
     {
         $data = ob_get_contents();

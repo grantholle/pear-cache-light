@@ -1,11 +1,11 @@
 {
-    "name": "pear/cache_lite",
+    "name": "grantholle/pear-cache-light",
     "type": "library",
     "description": "Fast and safe little cache system",
     "keywords": [
         "cache"
     ],
-    "homepage": "https://github.com/pear/Cache_Lite",
+    "homepage": "https://github.com/grantholle/pear-cache-light",
     "license": "LGPL-2.1-or-later",
     "authors": [
         {
@@ -15,24 +15,25 @@
         {
             "name": "Fabien Marty",
             "homepage": "http://pear.php.net/user/fab"
+        },
+        {
+            "name": "Grant Holle",
+            "homepage": "https://grantholle.dev"
         }
     ],
     "require": {
-        "php": ">=4.0.0"
+        "php": "^7.2"
     },
     "autoload": {
-        "classmap": [
-            "Cache/Lite.php"
-        ]
+        "psr-4": {
+            "Pear\\Cache\\Lite\\": "src"
+        }
     },
-    "include-path": [
-        "./"
-    ],
     "support": {
-        "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Cache_Lite",
-        "source": "https://github.com/pear/Cache_Lite"
+        "issues": "https://github.com/grantholle/pear-cache-light/issues",
+        "source": "https://github.com/grantholle/pear-cache-light"
     },
     "require-dev": {
-        "phpunit/phpunit": "^4"
+        "phpunit/phpunit": "^8"
     }
 }

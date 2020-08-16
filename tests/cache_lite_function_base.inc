@@ -1,3 +1,3 @@
 <?php
-require_once('Cache/Lite/Function.php');
+require_once('src/Lite/Function.php');
 ?>
